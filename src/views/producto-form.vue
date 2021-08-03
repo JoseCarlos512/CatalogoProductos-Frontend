@@ -1,24 +1,48 @@
 <template>
   <v-card outlined>
-
+    
     <v-card-title>
       <h3>Nuevo-Editar Producto</h3>
-
-      <v-space/>
+      <v-spacer/>
       <v-btn outlined @click="$router.back()">
           regresar
       </v-btn>
     </v-card-title>
 
     <v-divider/>
-    
+
     <v-card-text>
-      <v-card-actions>
-        <v-btn color="green" outlined>
-            Guardar
-        </v-btn>
-      </v-card-actions>
+        <v-form lazy-validation>
+            <v-text-field
+            :counter="10"
+            label="Codigo*"
+            type="number"
+            required
+            outlined
+          ></v-text-field>
+          <v-text-field
+            :counter="10"
+            label="Nombre*"
+            required
+          ></v-text-field>
+          <v-textarea
+            label="Descripcion*"
+            required
+          ></v-textarea>
+          <v-text-field
+            :counter="10"
+            label="Precio*"
+            type="number"
+            required
+          ></v-text-field>
+        </v-form>
     </v-card-text>
+    
+    <v-card-actions>
+      <v-btn color="green" outlined>
+          Guardar
+      </v-btn>
+    </v-card-actions>
 
   </v-card>
 </template>

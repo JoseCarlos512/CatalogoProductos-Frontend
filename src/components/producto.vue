@@ -75,8 +75,19 @@ export default {
     methods: {
         openForm() {
             this.$router.push({name: 'Producto'}); // name: nombre ruta
+        },
+        getListProductos() {
+            //var url = "http://127.0.0.1:8000/Api/productos"; 
+            //axios
+            //.get(url)
+            //.then(response => {
+            //    console.log(response);
+            //})
         }
     }, 
+    mounted() {
+        this.getListProductos();
+    },
 }
 </script>
 

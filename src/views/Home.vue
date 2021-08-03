@@ -1,7 +1,11 @@
 <template>
   <v-card outlined>
     <v-card-title>
-      Catalogo de Productos
+      <h2>Catalogo de Productos</h2>
+      <v-spacer/>
+      <v-btn color='green' text outlined @click="openForm">
+        Nuevo Producto
+      </v-btn>
     </v-card-title>
     <v-divider/>
 
@@ -16,27 +20,27 @@
               </v-text-field>
             </v-col>
             <v-col cols='2' sm='12' md='2'  >
-              <v-btn color='green' text outlined @click="openForm">
-                Nuevo Producto
+              <v-btn color='primary' @click="openForm">
+                Buscar
               </v-btn>
             </v-col>
         </v-row>
         <v-row style="margin-top: -30px">
           <v-col cols="12" md="3" sm="6" v-for="(producto, index) in productos" :key="index">
-              <producto/>
+              <Producto/>
           </v-col>
         </v-row >
     </v-card-text>
-
   </v-card>
 </template>
 
 <script>
-  import producto from "../components/producto"
+  import Producto from "../components/producto"
+
   export default {
     name: 'Home',
     components: {
-      producto
+      Producto
     },
     data() {
       return {

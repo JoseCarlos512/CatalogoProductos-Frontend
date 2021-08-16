@@ -13,7 +13,7 @@
         </template> -->
 
         <v-img height="150"
-               :src="rowProducto.url_imagen"
+               :src="rowProducto.url_imagen != null && rowProducto.url_imagen.includes('http')?rowProducto.url_imagen:'http://127.0.0.1:8000/imagenes/'+rowProducto.url_imagen"
                @click="dialogImagen = true"
         ></v-img>
 
@@ -76,7 +76,11 @@
             max-width="500px"
             transition="dialog-transition"
         >
-            <subir-imagen @salir="dialogImagen=false"></subir-imagen>
+            <subir-imagen 
+            :producto="rowProducto"
+            @salir="dialogImagen=false"
+            @listar="$emit('listar')">
+            </subir-imagen>
         </v-dialog>
 
     </v-card>
@@ -103,7 +107,7 @@ export default {
     },
     methods: {
         openForm() {
-            this.$router.push({name: 'Producto'}); // name: nombre ruta
+            this.$router.push({name: 'Producto-edit', params: {id: this.rowProducto.id}}); // name: nombre ruta
         },
         setLike() {
             const url = this.url + "set_like/" + this.rowProducto.id;

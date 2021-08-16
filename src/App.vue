@@ -40,9 +40,9 @@
       </v-container>
     </v-main>
 
-    <v-dialog v-model="dialog"  max-width="450">
+    <v-dialog v-model="dialog"  max-width="450" persistent>
         <Login 
-          @click="salir"
+          @salir="salir"
         />
     </v-dialog>
   </v-app>
@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     salir() {
-      console.log("No llega");
       this.dialog = false;
     }
   },

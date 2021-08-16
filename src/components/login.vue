@@ -13,19 +13,21 @@
         <v-divider></v-divider>
         
         <v-card-text>
-            <v-text-field
-                label="Usuario*"
-                required
-            ></v-text-field>
-            <v-text-field
-                label="Password*"
-                required
-            ></v-text-field>
-            <v-card-actions>
-                <v-btn class="white--text" color="pink darken-2" block>
-                    Ingresar
-                </v-btn>
-            </v-card-actions>
+            <form lazy-validation>
+                <v-text-field
+                    label="Usuario*"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    label="Password*"
+                    required
+                ></v-text-field>
+                <v-card-actions>
+                    <v-btn class="white--text" color="pink darken-2" block>
+                        Ingresar
+                    </v-btn>
+                </v-card-actions>
+            </form>
         </v-card-text>
     </v-card>
 </template>

@@ -13,10 +13,11 @@
         </template> -->
 
         <v-img height="150"
-               src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+               :src="rowProducto.url_imagen"
+               @click="dialogImagen = true"
         ></v-img>
 
-        <v-card-title>Cafe Badilico</v-card-title>
+        <v-card-title>{{rowProducto.codigo}} | {{rowProducto.nombre}}</v-card-title>
 
         <v-card-text>
             <v-row align="center" class="mx-0" >
@@ -35,10 +36,12 @@
             </v-row>
 
             <div class="my-4 text-subtitle-1">
-                $/ 456
+                $/ {{rowProducto.precio}}
             </div>
 
-            <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+            <div>
+                {{rowProducto.descripcion}}
+            </div>
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
@@ -48,12 +51,12 @@
                 active-class="deep-purple accent-4 white--text"
                 column
             >
-                <v-chip>
-                    <v-icon size='20'>mdi-thumb-up-outline</v-icon> (3)
+                <v-chip @click="setLike()">
+                    <v-icon size='20'>mdi-thumb-up-outline</v-icon> ({{rowProducto.like}})
                 </v-chip>
 
-                <v-chip>
-                    <v-icon size='20'>mdi-thumb-down-outline</v-icon> (3)
+                <v-chip @click="setDislike()">
+                    <v-icon size='20'>mdi-thumb-down-outline</v-icon> ({{rowProducto.dislike}})
                 </v-chip>
             </v-chip-group>
         </v-card-text>
@@ -62,31 +65,87 @@
             <v-btn color="green" text @click="openForm">
                 Editar
             </v-btn>
-            <v-btn color="red" text>
+            <v-btn color="red" @click="eliminar()" text>
                 Eliminar
             </v-btn>
         </v-card-actions>
+
+        <v-dialog
+            v-model="dialogImagen"
+            persistent
+            max-width="500px"
+            transition="dialog-transition"
+        >
+            <subir-imagen @salir="dialogImagen=false"></subir-imagen>
+        </v-dialog>
+
     </v-card>
 </template>
 
 <script>
+import axios from 'axios';
+import { mapState } from 'vuex';
+import subirImagen from "./subir-imagen";
+
 export default {
     name: 'Producto',
+    components: {
+        'subir-imagen' : subirImagen
+    },
+    props: ['rowProducto'],
+    data() {
+        return {
+            dialogImagen: false
+        }
+    },
+    computed: {
+        ...mapState(['url'])
+    },
     methods: {
         openForm() {
             this.$router.push({name: 'Producto'}); // name: nombre ruta
         },
-        getListProductos() {
-            //var url = "http://127.0.0.1:8000/Api/productos"; 
-            //axios
-            //.get(url)
-            //.then(response => {
-            //    console.log(response);
-            //})
+        setLike() {
+            const url = this.url + "set_like/" + this.rowProducto.id;
+            axios.put(url)
+            .then(response => {
+                if (response.data.res == true) {
+                    this.$toastr.success(response.data.message, 'Mensaje');
+                    this.rowProducto.like ++;
+                } else {
+                    this.$toastr.error(response.data.message, 'Mensaje');
+                }
+            })
+        },
+        setDislike() {
+            const url = this.url + "set_dislike/" + this.rowProducto.id;
+            axios.put(url)
+            .then(response => {
+                if (response.data.res == true) {
+                    this.$toastr.success(response.data.message, 'Mensaje');
+                    this.rowProducto.dislike --;
+                } else {
+                    this.$toastr.error(response.data.message, 'Mensaje');
+                }
+            })
+        },
+        eliminar() {
+            if (confirm("Seguro que quiere eliminar el registro?")) {
+                const url = this.url + "productos/" + this.rowProducto.id;
+                axios.delete(url)
+                .then(response => {
+                    if (response.data.res == true) {
+                        this.$toastr.success(response.data.message, 'Mensaje');
+                        this.$emit("listar");
+                    } else {
+                        this.$toastr.error(response.data.message, 'Mensaje');
+                    }
+                })
+            }
         }
     }, 
     mounted() {
-        this.getListProductos();
+        
     },
 }
 </script>

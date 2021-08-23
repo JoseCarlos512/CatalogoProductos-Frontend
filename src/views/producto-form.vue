@@ -143,6 +143,7 @@ export default {
       }).then(response => {
         if (response.data.res == true) {
             this.$toastr.success(response.data.message, 'Mensaje');
+            this.$router.back()
         } else {
             this.$toastr.error(response.data.message, 'Mensaje');
         }

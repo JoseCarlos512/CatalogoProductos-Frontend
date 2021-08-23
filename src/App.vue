@@ -15,12 +15,15 @@
       <v-btn
         text
         @click="dialog = !dialog"
+        v-if="!isLogin"
       >
         <span class="mr-2">Login</span>
       </v-btn>
 
       <v-btn
         text
+        @click="logout"
+        v-if="isLogin"
       >
         <span class="mr-2">Salir</span>
         <v-avatar 
@@ -50,6 +53,8 @@
 
 <script>
 import Login from "./components/login"
+import store from "@/store/index";
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -61,9 +66,27 @@ export default {
       dialog: false
     }
   },
+  computed: {
+    ...mapGetters({
+      isLogin: "isLogin",
+      user: "getUser"
+    })
+  },
   methods: {
     salir() {
       this.dialog = false;
+    },
+    logout() {
+      if(confirm("Seguro que quiere salir?")) {
+        store.dispatch("destroyToken")
+        .then(response => {
+            if (response.data.res == true) {
+              this.$toastr.success(response.data.message);
+            } else {
+              this.$toastr.error(response.data.message);
+            }
+        });
+      }
     }
   },
 };

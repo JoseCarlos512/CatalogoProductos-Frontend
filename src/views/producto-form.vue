@@ -16,7 +16,11 @@
       <v-divider/>
 
       <v-card-text>
-        
+
+            <error-componente 
+              v-if="errores !== null"
+              :errores="errores"/>
+
             <v-text-field
             :counter="10"
             label="Codigo*"
@@ -78,9 +82,13 @@
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
+import errores from '@/components/errores.vue';
 
 export default {
   name: "producto-form",
+  components: {
+    'error-componente': errores
+  },
   data() {
     // Declaracion de variables locales
     return {
@@ -91,7 +99,7 @@ export default {
       producto: {
         user: {}
       },
-      errores: [],
+      errores: null,
       loading: false
     }
   },
@@ -140,7 +148,11 @@ export default {
         }
       }).catch(e => {
         this.errores = e.response.data.errors;
-        this.$toastr.error(e.response.data.message, 'Mensaje');
+        /**
+         * Comentado de momentos las alertas se generan 
+         * por la validacion del backend sin usando el mismo vuetify 
+         */
+        //this.$toastr.error(e.response.data.message, 'Mensaje'); 
       }).finally(() => {
         this.loading = false;
       })

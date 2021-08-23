@@ -25,14 +25,16 @@ const routes = [
     name: 'Producto',
     component: function () {
       return import('../views/producto-form.vue')
-    }
+    },
+    meta: {requiresAuth : true} // Indicar que necesita autenticacion
   },
   {
     path: '/producto/:id/edit',
     name: 'Producto-edit',
     component: function () {
       return import('../views/producto-form.vue')
-    }
+    },
+    meta: {requiresAuth : true} // Indicar que necesita autenticacion
   }
 ]
 

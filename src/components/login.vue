@@ -13,17 +13,21 @@
         <v-divider></v-divider>
         
         <v-card-text>
-            <form lazy-validation>
+            <form 
+            @submit.prevent="login()"
+            lazy-validation>
                 <v-text-field
+                    v-model="user"
                     label="Usuario*"
                     required
                 ></v-text-field>
                 <v-text-field
+                    v-model="password"
                     label="Password*"
                     required
                 ></v-text-field>
                 <v-card-actions>
-                    <v-btn class="white--text" color="pink darken-2" block>
+                    <v-btn class="white--text" type="submit" color="pink darken-2" block>
                         Ingresar
                     </v-btn>
                 </v-card-actions>
@@ -33,16 +37,32 @@
 </template>
 
 <script>
+import store from "@/store/index";
+
 export default {
     name: "Login",
     data() {
         return {
-            
+            user: "",
+            password: ""
         }
     },
     methods: {
         salir () {
             this.$emit("salir");
+        },
+        login() {
+            store.dispatch('getToken', {
+                email: this.user,
+                password: this.password
+            }).then(response => {
+                if(response.data.res == true) {
+                    this.$toastr.success(response.data.message);
+                    this.$emit("salir");
+                } else {
+                    this.$toastr.error(response.data.message);
+                }
+            });
         }
     },
 }

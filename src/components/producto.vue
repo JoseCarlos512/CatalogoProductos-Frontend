@@ -62,10 +62,10 @@
         </v-card-text>
 
         <v-card-actions>
-            <v-btn color="green" text @click="openForm">
+            <v-btn color="green" text @click="openForm" v-if="isLogin">
                 Editar
             </v-btn>
-            <v-btn color="red" @click="eliminar()" text>
+            <v-btn color="red" @click="eliminar()" text v-if="isLogin">
                 Eliminar
             </v-btn>
         </v-card-actions>
@@ -88,7 +88,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import subirImagen from "./subir-imagen";
 
 export default {
@@ -103,7 +103,11 @@ export default {
         }
     },
     computed: {
-        ...mapState(['url'])
+        ...mapState(['url']),
+        ...mapGetters({
+            isLogin: "isLogin",
+            user: "getUser"
+        })
     },
     methods: {
         openForm() {

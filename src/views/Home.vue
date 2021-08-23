@@ -3,7 +3,7 @@
     <v-card-title>
       <h2>Catalogo de Productos</h2>
       <v-spacer/>
-      <v-btn color='green' text outlined @click="openForm">
+      <v-btn color='green' text outlined @click="openForm" v-if="isLogin">
         Nuevo Producto
       </v-btn>
     </v-card-title>
@@ -38,7 +38,7 @@
 <script>
   import Producto from "../components/producto"
   import axios from "axios"
-  import {mapState} from "vuex"
+  import {mapState, mapGetters} from "vuex"
 
 
   export default {
@@ -54,7 +54,12 @@
       }
     },
     computed: {
-      ...mapState(['url'])
+      ...mapState(['url']),
+      ...mapGetters({
+        isLogin: "isLogin",
+        user: "getUser"
+      })
+
     },
     methods: {
       openForm() {

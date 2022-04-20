@@ -33,7 +33,7 @@ Vue.config.productionTip = false
  */
 if(store.getters.isLogin) {
   axios.defaults.headers.common.Authorization = 'Bearer ' + store.state.token;
-  store.dispatch("getUsuario");
+  store.dispatch("getUser");
 }
 
 /**
